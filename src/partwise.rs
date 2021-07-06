@@ -990,8 +990,11 @@ impl Part {
                 // Volume Map
                 let line = format!("{}MeasureVolumeMap = {{\n", indent(2));
                 file.write_all(line.as_bytes())?;
-                for (i, volume) in volumes {
-                    let line = format!("{}{{ {}, {} }},\n", indent(3), i, volume);
+                for (i, mut volume) in volumes {
+                    if volume == 0 {
+                        volume = 10
+                    }
+                    let line = format!("{}{{ {}, {:.2} }},\n", indent(3), i, volume as f64 / 100f64);
                     file.write_all(line.as_bytes())?;
                 }
                 let line = format!("{}}},\n", indent(2));
